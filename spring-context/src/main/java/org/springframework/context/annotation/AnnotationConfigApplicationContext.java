@@ -63,7 +63,9 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * through {@link #register} calls and then manually {@linkplain #refresh refreshed}.
 	 */
 	public AnnotationConfigApplicationContext() {
+		//在IOC容器中初始化注解bean读取器AnnotatedBeanDefinitionReader
 		this.reader = new AnnotatedBeanDefinitionReader(this);
+		//在IOC容器中初始化按类路径扫描注解bean的扫描器
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
 
@@ -80,6 +82,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	/**
 	 * Create a new AnnotationConfigApplicationContext, deriving bean definitions
 	 * from the given component classes and automatically refreshing the context.
+	 *
+	 * 20200413 add by qianzb
+	 * 创建新的AnnotationConfigApplicationContext，从给定的组件类派生bean定义并自动刷新上下文。
+	 *
 	 * @param componentClasses one or more component classes &mdash; for example,
 	 * {@link Configuration @Configuration} classes
 	 */
@@ -155,6 +161,10 @@ public class AnnotationConfigApplicationContext extends GenericApplicationContex
 	 * {@link Configuration @Configuration} classes
 	 * @see #scan(String...)
 	 * @see #refresh()
+	 *
+	 * add by qianzb 20200408
+	 * 注册一个或多个要处理的组件类
+	 * 请注意，必须调用{@link#refresh（）}，以便上下文完全处理新类
 	 */
 	@Override
 	public void register(Class<?>... componentClasses) {

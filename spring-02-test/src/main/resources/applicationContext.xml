@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="helloWorld" class="com.qzb.spring.ioc.HelloWorldImpl"/>
+	<bean id="helloWorld2" class="com.qzb.spring.ioc.HelloWorldImpl" scope="singleton"/>
+	<bean id="helloWorld3" class="com.qzb.spring.ioc.HelloWorldImpl" scope="prototype"/>
+	<bean id="helloService" class="com.qzb.spring.ioc.HelloServiceImpl">
+		<property name="helloWorld" ref="helloWorld"/>
+	</bean>
+	<bean id="helloServiceFactory" class="com.qzb.spring.ioc.HelloServiceFactory" factory-method="createBean"/>
+	<bean id="helloServiceFactory2" class="com.qzb.spring.ioc.HelloServiceFactory2"/>
+	<bean id="helloService2" factory-bean="helloServiceFactory2" factory-method="createBean"/>
+
+	<bean id="person1" class="com.qzb.spring.ioc.Person">
+		<property name="name" value="张三"></property>
+		<property name="age" value="26"></property>
+	</bean>
+
+	<bean id="person2" class="com.qzb.spring.ioc.Person">
+		<constructor-arg index="0" value="李四"></constructor-arg>
+		<constructor-arg name="age" value="25"></constructor-arg>
+	</bean>
+
+	<!-- 开启注解扫描 -->
+	<context:component-scan base-package="com.qzb.spring.ioc"/>
+
+</beans>

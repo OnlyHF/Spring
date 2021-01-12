@@ -131,6 +131,10 @@ public class AnnotatedBeanDefinitionReader {
 	 * component class more than once has no additional effect.
 	 * @param componentClasses one or more component classes,
 	 * e.g. {@link Configuration @Configuration} classes
+	 *
+	 * add by qianzb 20200408
+	 * 注册一个或多个要处理的组件类
+	 * 对{@code register}的调用是等幂的；多次添加samecomponent类没有额外的效果
 	 */
 	public void register(Class<?>... componentClasses) {
 		for (Class<?> componentClass : componentClasses) {
@@ -142,6 +146,9 @@ public class AnnotatedBeanDefinitionReader {
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
 	 * @param beanClass the class of the bean
+	 *
+	 * add by qianzb 20200408
+	 * 从给定的bean类中注册一个bean，从类声明的注释中派生其元数据
 	 */
 	public void registerBean(Class<?> beanClass) {
 		doRegisterBean(beanClass, null, null, null, null);
@@ -236,52 +243,85 @@ public class AnnotatedBeanDefinitionReader {
 	/**
 	 * Register a bean from the given bean class, deriving its metadata from
 	 * class-declared annotations.
-	 * @param beanClass the class of the bean
+	 * @param beanClass the class of the bean bean的类
 	 * @param name an explicit name for the bean
 	 * @param qualifiers specific qualifier annotations to consider, if any,
 	 * in addition to qualifiers at the bean class level
-	 * @param supplier a callback for creating an instance of the bean
+	 * @param supplier a callback for creating an instance of the bean supplier用于创建bean实例的回调
 	 * (may be {@code null})
 	 * @param customizers one or more callbacks for customizing the factory's
 	 * {@link BeanDefinition}, e.g. setting a lazy-init or primary flag
 	 * @since 5.0
+	 *
+	 * add by qianzb 20200408
+	 * 从给定的bean类中注册一个bean，从类声明的注释中派生其元数据
 	 */
 	private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,
 			@Nullable BeanDefinitionCustomizer[] customizers) {
 
+//		将Bean配置类信息转成容器中AnnotatedGenericBeanDefinition数据结构,
+//	 　　AnnotatedGenericBeanDefinition继承自BeanDefinition作用是定义一个bean的数据结构，
+//	 　 下面的getMetadata可以获取到该bean上的注解信息
 		AnnotatedGenericBeanDefinition abd = new AnnotatedGenericBeanDefinition(beanClass);
+
+		// @Conditional装配条件判断是否需要跳过注册
 		if (this.conditionEvaluator.shouldSkip(abd.getMetadata())) {
 			return;
 		}
 
+		//设置回调 @param instanceSupplier 用于创建bean实例的回调
 		abd.setInstanceSupplier(supplier);
+
+		//解析bean作用域(单例或者原型)，如果有@Scope注解，则解析@Scope，没有则默认为singleton
 		ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(abd);
+
+		//作用域写回BeanDefinition数据结构, abd中缺损的情况下为空，将默认值singleton重新赋值到abd
 		abd.setScope(scopeMetadata.getScopeName());
+
+		//生成bean配置类beanName
 		String beanName = (name != null ? name : this.beanNameGenerator.generateBeanName(abd, this.registry));
 
+		//通用注解解析到abd结构中，主要是处理Lazy, primary DependsOn, Role ,Description这五个注解
 		AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+
+		// @Qualifier特殊限定符处理，@param  qualifiers 除了bean类级别的限定符之外，要考虑的限定符特定限定符注释（如果有）
 		if (qualifiers != null) {
 			for (Class<? extends Annotation> qualifier : qualifiers) {
 				if (Primary.class == qualifier) {
+					// 如果配置@Primary注解，则设置当前Bean为自动装配autowire时首选bean
 					abd.setPrimary(true);
 				}
 				else if (Lazy.class == qualifier) {
+					//设置当前bean为延迟加载
 					abd.setLazyInit(true);
 				}
 				else {
+					//其他注解，则添加到abd结构中
 					abd.addQualifier(new AutowireCandidateQualifier(qualifier));
 				}
 			}
 		}
+
+//		自定义bean注册，通常用在applicationContext创建后，手动向容器中一lambda表达式的方式注册bean,
+//		比如：applicationContext.registerBean(BookService.class, () -> new BookService());
 		if (customizers != null) {
 			for (BeanDefinitionCustomizer customizer : customizers) {
+				//自定义bean添加到BeanDefinition
 				customizer.customize(abd);
 			}
 		}
 
+		//根据beanName和bean定义信息封装一个beanhold,heanhold其实就是一个 beanname和BeanDefinition的映射
 		BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+
+		//创建代理对象
 		definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+
+//		BeanDefinitionReaderUtils.registerBeanDefinition 内部通过
+//		DefaultListableBeanFactory.registerBeanDefinition(String beanName, BeanDefinition beanDefinition)
+//		按名称将bean定义信息注册到容器中，实际上DefaultListableBeanFactory内部维护一个Map<String, BeanDefinition>类型变量beanDefinitionMap，
+//		用于保存注bean定义信息（beanname 和 beandefine映射）
 		BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
 	}
 

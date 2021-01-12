@@ -174,6 +174,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+		/**
+		 * add by qianzb 20200406
+		 * 第一步：我们尝试取一级缓存(单例缓存池中去获取对象，一般情况从该map中获取的对象是直接可以使用的)
+		 * IOC容器初始化加载单实例bean,即第一次进来的时候，该map中一般返回空
+		 */
 		Object singletonObject = this.singletonObjects.get(beanName);
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {

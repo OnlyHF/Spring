@@ -516,40 +516,55 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
+			// add by qianzb 20200413 刷新前的预处理
 			prepareRefresh();
 
 			// Tell the subclass to refresh the internal bean factory.
+			// add by qianzb 20200413 获取刷新后的内部Bean工厂
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// add by qianzb 20200408 准备bean工厂以供在此上下文中使用。
+			// add by qianzb 20200413 BeanFactory的预准备工作
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// add by qianzb 20200408 允许在上下文子类中对bean工厂进行后处理。
+				// add by qianzb 20200413 BeanFactory准备工作完成后，可以做一些后置处理工作
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				// add by qianzb 20200408 调用上下文中注册为bean的工厂处理器。
+				// add by qianzb 20200413 执行BeanFactoryPostProcessor的方法，BeanFactory的后置处理器，在BeanFactory标准初始化之后执行的
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// add by qianzb 20200413 注册BeanPostProcessor（Bean的后置处理器）,用于拦截bean创建过程，实现对bean的增强
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// add by qianzb 20200413 初始化MessageSource组件（做国际化功能；消息绑定，消息解析）
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				// add by qianzb 20200413 初始化事件派发器
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
+				// add by qianzb 20200413 空方法，可以用于子类实现在容器刷新时自定义逻辑
 				onRefresh();
 
 				// Check for listener beans and register them.
+				// 注册事件监听器，将所有项目里面的ApplicationListener注册到容器中来
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				// add by qianzb 20200413 初始化所有剩下的单实例bean,单例bean在初始化容器时创建，原型bean在获取时（getbean）时创建
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
+				// add by qianzb 20200413 完成BeanFactory的初始化创建工作，IOC容器就创建完成；
 				finishRefresh();
 			}
 
@@ -560,18 +575,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				}
 
 				// Destroy already created singletons to avoid dangling resources.
+				// 20200413  销毁已经创建的单例，以避免挂起资源。
 				destroyBeans();
 
 				// Reset 'active' flag.
+				// add by qianzb 20200413 重置“活动”标志。
 				cancelRefresh(ex);
 
 				// Propagate exception to caller.
+				// add by qianzb 20200413 向调用者传播异常。
 				throw ex;
 			}
 
 			finally {
 				// Reset common introspection caches in Spring's core, since we
 				// might not ever need metadata for singleton beans anymore...
+				// add by qianzb 20200413 在Spring的core中重置常见的内省缓存，因为我们可能不再需要单例bean的元数据了
 				resetCommonCaches();
 			}
 		}
@@ -580,6 +599,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	/**
 	 * Prepare this context for refreshing, setting its startup date and
 	 * active flag as well as performing any initialization of property sources.
+	 *
+	 * add by qianzb 20200408
+	 * 准备此上下文以进行刷新、设置其启动日期和活动标志以及执行属性源的任何初始化。
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
@@ -693,6 +715,10 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * will have been instantiated yet. This allows for registering special
 	 * BeanPostProcessors etc in certain ApplicationContext implementations.
 	 * @param beanFactory the bean factory used by the application context
+	 *
+	 * add by qianzb 20200408
+	 * 在标准初始化之后修改应用程序上下文的内部bean工厂。所有bean定义都将被加载，但是还没有bean被实例化。
+	 * 这允许在特定的ApplicationContext实现中注册特殊的beanpstprocessors等。
 	 */
 	protected void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) {
 	}
@@ -701,6 +727,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 * Instantiate and invoke all registered BeanFactoryPostProcessor beans,
 	 * respecting explicit order if given.
 	 * <p>Must be called before singleton instantiation.
+	 *
+	 * add by qianzb 20200408
+	 * 实例化并调用所有已注册的beanfactorypostprocessorbean，如果给定则指定显式顺序。
 	 */
 	protected void invokeBeanFactoryPostProcessors(ConfigurableListableBeanFactory beanFactory) {
 		PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(beanFactory, getBeanFactoryPostProcessors());
