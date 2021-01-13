@@ -7,4 +7,5 @@ public class Test {
 		Hello hello = BeanFactory.getBean();
 		hello.sayHello();
 	}
+
 }
