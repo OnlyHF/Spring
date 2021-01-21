@@ -20,4 +20,5 @@ dependencies {
     compile(project(":spring-context"))
     compile(project(":spring-expression"))
     compile group: 'com.alibaba', name: 'druid', version: '1.2.4'
+    compile(project(":spring-aop"))
 }

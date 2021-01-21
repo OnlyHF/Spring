@@ -1,10 +1,12 @@
 package com.test;
 
 import com.qzb.spring5.User;
+import com.qzb.spring5.annotation.service.UserService;
 import com.qzb.spring5.autowire.Emp;
 import com.qzb.spring5.bean.Orders;
 import com.qzb.spring5.collectiontype.Student;
 import com.qzb.spring5.factorybean.MyBean;
+import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -51,5 +53,14 @@ public class TestSpring5 {
 		ApplicationContext context = new ClassPathXmlApplicationContext(classpath);
 		Emp emp = context.getBean("emp", Emp.class);
 		System.out.println(emp);
+	}
+
+	@Test
+	public void test06() {
+		String classPath = "bean5.xml";
+		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
+		UserService userService = context.getBean("userService", UserService.class);
+		System.out.println(userService);
+		userService.add();
 	}
 }
