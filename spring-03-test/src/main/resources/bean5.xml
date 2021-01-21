@@ -11,4 +11,20 @@
 	 -->
 	<context:component-scan base-package="com.qzb.spring5.annotation"></context:component-scan>
 
+	<!--
+		use-default-filters="false" ： 表示现在不使用默认filter，自己配置filter
+		context:include-filter ： 设置扫描哪些内容
+	-->
+	<context:component-scan base-package="com.qzb.spring5.annotation" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
+	<!--
+		下面配置扫面包所有内容
+		context:exclude-filter ： 设置哪些内容不扫描
+	-->
+	<context:component-scan base-package="com.qzb.spring5.annotation">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+
 </beans>
