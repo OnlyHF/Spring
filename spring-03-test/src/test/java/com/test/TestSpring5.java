@@ -1,6 +1,7 @@
 package com.test;
 
 import com.qzb.spring5.User;
+import com.qzb.spring5.annotation.config.SpringConfig;
 import com.qzb.spring5.annotation.service.UserService;
 import com.qzb.spring5.autowire.Emp;
 import com.qzb.spring5.bean.Orders;
@@ -8,6 +9,7 @@ import com.qzb.spring5.collectiontype.Student;
 import com.qzb.spring5.factorybean.MyBean;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestSpring5 {
@@ -59,6 +61,14 @@ public class TestSpring5 {
 	public void test06() {
 		String classPath = "bean5.xml";
 		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
+		UserService userService = context.getBean("userService", UserService.class);
+		System.out.println(userService);
+		userService.add();
+	}
+
+	@Test
+	public void test07() {
+		ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
 		UserService userService = context.getBean("userService", UserService.class);
 		System.out.println(userService);
 		userService.add();
