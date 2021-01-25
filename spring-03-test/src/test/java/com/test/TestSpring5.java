@@ -73,4 +73,13 @@ public class TestSpring5 {
 		System.out.println(userService);
 		userService.add();
 	}
+
+	@Test
+	public void test08() {
+		String classPath = "bean6.xml";
+		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
+		com.qzb.spring5.aop.annotation.User user = context.getBean("user", com.qzb.spring5.aop.annotation.User.class);
+		System.out.println(user);
+		user.add();
+	}
 }
