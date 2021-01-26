@@ -19,11 +19,14 @@ dependencies {
     compile(project(":spring-core"))
     compile(project(":spring-context"))
     compile(project(":spring-expression"))
+    compile(project(":spring-jdbc"))
     compile group: 'aopalliance', name: 'aopalliance', version: '1.0'
     compile group: 'cglib', name: 'cglib', version: '3.3.0'
     compile("org.aspectj:aspectjweaver")
 //    compile(project(":spring-aspects"))
 //    compile(project(":spring-aop"))
-//    compile(project(":spring-tx"))
+    compile(project(":spring-tx"))
+    compile(project(":spring-orm"))
     compile group: 'com.alibaba', name: 'druid', version: '1.2.4'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
 }

@@ -3,10 +3,12 @@ package com.test;
 import com.qzb.spring5.User;
 import com.qzb.spring5.annotation.config.SpringConfig;
 import com.qzb.spring5.annotation.service.UserService;
+import com.qzb.spring5.aop.xml.Book;
 import com.qzb.spring5.autowire.Emp;
 import com.qzb.spring5.bean.Orders;
 import com.qzb.spring5.collectiontype.Student;
 import com.qzb.spring5.factorybean.MyBean;
+import com.qzb.spring5.jdbctemplate.service.BookService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -81,5 +83,28 @@ public class TestSpring5 {
 		com.qzb.spring5.aop.annotation.User user = context.getBean("user", com.qzb.spring5.aop.annotation.User.class);
 //		System.out.println(user);
 		user.add();
+	}
+
+	@Test
+	public void test09() {
+		String classPath = "bean7.xml";
+		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
+		Book book = context.getBean("book", Book.class);
+//		System.out.println(user);
+		book.buy();
+	}
+
+	@Test
+	public void test10() {
+		String classPath = "bean8.xml";
+		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
+		BookService bookService = context.getBean("bookService", BookService.class);
+
+		com.qzb.spring5.jdbctemplate.entity.Book book = new com.qzb.spring5.jdbctemplate.entity.Book();
+		book.setBookId("1");
+		book.setBookName("《hello world》");
+		book.setBookStatus("1");
+
+		bookService.addBook(book);
 	}
 }
