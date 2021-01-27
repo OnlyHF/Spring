@@ -100,11 +100,22 @@ public class TestSpring5 {
 		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
 		BookService bookService = context.getBean("bookService", BookService.class);
 
-		com.qzb.spring5.jdbctemplate.entity.Book book = new com.qzb.spring5.jdbctemplate.entity.Book();
-		book.setBookId("1");
-		book.setBookName("《hello world》");
-		book.setBookStatus("1");
+//		com.qzb.spring5.jdbctemplate.entity.Book book = new com.qzb.spring5.jdbctemplate.entity.Book();
+//		book.setBookId("1");
+//		book.setBookName("《hello world》");
+//		book.setBookStatus("1");
+//
+//		bookService.addBook(book);
 
-		bookService.addBook(book);
+//		com.qzb.spring5.jdbctemplate.entity.Book book = new com.qzb.spring5.jdbctemplate.entity.Book();
+//		book.setBookId("1");
+//		book.setBookName("《hello java》");
+//		book.setBookStatus("2");
+//
+//		bookService.updateBook(book);
+
+		bookService.delete("1");
+
+
 	}
 }

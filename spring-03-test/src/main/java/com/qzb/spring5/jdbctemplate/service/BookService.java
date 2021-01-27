@@ -15,4 +15,11 @@ public class BookService {
 		bookDao.add(book);
 	}
 
+	public void updateBook(Book book) {
+		bookDao.update(book);
+	}
+
+	public void delete(String bookId) {
+		bookDao.delete(bookId);
+	}
 }
