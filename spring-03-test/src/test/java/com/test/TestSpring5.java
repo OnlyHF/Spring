@@ -14,6 +14,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TestSpring5 {
 
 	@org.junit.Test
@@ -101,10 +104,9 @@ public class TestSpring5 {
 		BookService bookService = context.getBean("bookService", BookService.class);
 
 //		com.qzb.spring5.jdbctemplate.entity.Book book = new com.qzb.spring5.jdbctemplate.entity.Book();
-//		book.setBookId("1");
-//		book.setBookName("《hello world》");
+//		book.setBookId("2");
+//		book.setBookName("《hello 20210127》");
 //		book.setBookStatus("1");
-//
 //		bookService.addBook(book);
 
 //		com.qzb.spring5.jdbctemplate.entity.Book book = new com.qzb.spring5.jdbctemplate.entity.Book();
@@ -114,8 +116,40 @@ public class TestSpring5 {
 //
 //		bookService.updateBook(book);
 
-		bookService.delete("1");
+//		bookService.delete("1");
 
+//		int count = bookService.findCount();
+//		System.out.println(count);
 
+//		com.qzb.spring5.jdbctemplate.entity.Book book = bookService.findOne("1");
+//		System.out.println(book);
+
+//		List<com.qzb.spring5.jdbctemplate.entity.Book> bookList = bookService.findAll();
+//		System.out.println(bookList);
+
+//		List<Object[]> batchArgs = new ArrayList<>();
+//		Object[] o1 = {"3", "name3", "3"};
+//		Object[] o2 = {"4", "name5", "4"};
+//		Object[] o3 = {"5", "name5", "5"};
+//		batchArgs.add(o1);
+//		batchArgs.add(o2);
+//		batchArgs.add(o3);
+//		bookService.batchAdd(batchArgs);
+
+//		List<Object[]> batchArgs = new ArrayList<>();
+//		Object[] o1 = {"《数学》", "3", "3"};
+//		Object[] o2 = {"《语文》", "4", "4"};
+//		Object[] o3 = {"《英语》", "5", "5"};
+//		batchArgs.add(o1);
+//		batchArgs.add(o2);
+//		batchArgs.add(o3);
+//		bookService.batchUpdate(batchArgs);
+
+		List<Object[]> batchArgs = new ArrayList<>();
+		Object[] o1 = {"3"};
+		Object[] o2 = {"4"};
+		batchArgs.add(o1);
+		batchArgs.add(o2);
+		bookService.batchDelete(batchArgs);
 	}
 }
