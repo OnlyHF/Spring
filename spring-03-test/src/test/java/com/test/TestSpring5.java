@@ -9,6 +9,7 @@ import com.qzb.spring5.bean.Orders;
 import com.qzb.spring5.collectiontype.Student;
 import com.qzb.spring5.factorybean.MyBean;
 import com.qzb.spring5.jdbctemplate.service.BookService;
+import com.qzb.spring5.transaction.service.AccountService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -124,8 +125,8 @@ public class TestSpring5 {
 //		com.qzb.spring5.jdbctemplate.entity.Book book = bookService.findOne("1");
 //		System.out.println(book);
 
-//		List<com.qzb.spring5.jdbctemplate.entity.Book> bookList = bookService.findAll();
-//		System.out.println(bookList);
+		List<com.qzb.spring5.jdbctemplate.entity.Book> bookList = bookService.findAll();
+		System.out.println(bookList);
 
 //		List<Object[]> batchArgs = new ArrayList<>();
 //		Object[] o1 = {"3", "name3", "3"};
@@ -145,11 +146,19 @@ public class TestSpring5 {
 //		batchArgs.add(o3);
 //		bookService.batchUpdate(batchArgs);
 
-		List<Object[]> batchArgs = new ArrayList<>();
-		Object[] o1 = {"3"};
-		Object[] o2 = {"4"};
-		batchArgs.add(o1);
-		batchArgs.add(o2);
-		bookService.batchDelete(batchArgs);
+//		List<Object[]> batchArgs = new ArrayList<>();
+//		Object[] o1 = {"3"};
+//		Object[] o2 = {"4"};
+//		batchArgs.add(o1);
+//		batchArgs.add(o2);
+//		bookService.batchDelete(batchArgs);
+	}
+
+	@Test
+	public void test11() {
+		String classPath = "bean9.xml";
+		ApplicationContext context = new ClassPathXmlApplicationContext(classPath);
+		AccountService accountService = context.getBean("accountService", AccountService.class);
+		accountService.accountMoney();
 	}
 }

@@ -1,0 +1,4 @@
+jdbc.url=jdbc:mysql://192.168.170.189:3306/spring
+jdbc.username=root
+jdbc.password=qzb19940212
+jdbc.driverClassName=com.mysql.cj.jdbc.Driver
