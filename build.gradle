@@ -342,6 +342,7 @@ configure([rootProject] + javaProjects) { project ->
 		testRuntime("org.apache.logging.log4j:log4j-core")
 		testRuntime("org.apache.logging.log4j:log4j-slf4j-impl")
 		testRuntime("org.apache.logging.log4j:log4j-jul")
+//		compile("org.slf4j:jcl-over-slf4j:1.5.8")
 		// JSR-305 only used for non-required meta-annotations
 		compileOnly("com.google.code.findbugs:jsr305")
 		testCompileOnly("com.google.code.findbugs:jsr305")
