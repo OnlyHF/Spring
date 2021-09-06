@@ -1,0 +1,12 @@
+手写容器加载大体过程
+
+
+参考：
+图灵教学视频：https://ke.qq.com/webcourse/231516/103867870#taid=11892871817037916&vid=3701925923730064660
+
+
+
+com.qzb.ioc.selfwrite.
+    spring : 该包主要模拟spring中的相关类
+    service : 测试过程中定义的业务代码
+
