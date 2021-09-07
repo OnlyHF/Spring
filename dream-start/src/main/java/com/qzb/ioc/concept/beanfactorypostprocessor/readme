@@ -1,0 +1,2 @@
+BeanFactoryPostProcessor表示Bean工厂的后置处理器，其实和BeanPostProcessor类似，BeanPostProcessor是干涉Bean的创建过程，
+BeanFactoryPostProcessor是干涉BeanFactory的创建过程
