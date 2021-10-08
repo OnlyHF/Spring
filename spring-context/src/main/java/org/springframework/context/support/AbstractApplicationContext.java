@@ -1038,6 +1038,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 			try {
 				// Publish shutdown event.
+				// 将会调用：LifecycleProcessor.onClose()  20210918 13:59
 				publishEvent(new ContextClosedEvent(this));
 			}
 			catch (Throwable ex) {
