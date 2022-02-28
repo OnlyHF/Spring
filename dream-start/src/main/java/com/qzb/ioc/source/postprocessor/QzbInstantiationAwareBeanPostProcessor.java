@@ -15,13 +15,13 @@ public class QzbInstantiationAwareBeanPostProcessor implements InstantiationAwar
 	
 	@Override
 	public Object postProcessBeforeInstantiation(final Class<?> beanClass, final String beanName) throws BeansException {
-		
+
 		// 如果是这样，表示不需要Spring来实例化了，并且后续的Spring依赖注入也不会进行了，会跳过一些步骤，直接执行初始化后这一步
-		if ("helloService".equals(beanName)) {
-			System.out.println("实例化之前....");
-			return new HelloService();
-		}
-		
+//		if ("helloService".equals(beanName)) {
+//			System.out.println("实例化之前....");
+//			return new HelloService();
+//		}
+
 		return null;
 	}
 	
