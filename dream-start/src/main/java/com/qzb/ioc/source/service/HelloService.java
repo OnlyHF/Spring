@@ -1,5 +1,7 @@
 package com.qzb.ioc.source.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.SimpleApplicationEventMulticaster;
 import org.springframework.stereotype.Service;
 
 /**
@@ -9,9 +11,13 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 public class HelloService {
-	
+
+	@Autowired
+	private SimpleApplicationEventMulticaster simpleApplicationEventMulticaster;
+
 	public void hello() {
 		System.out.println("hello");
+		System.out.println("HelloService : " + simpleApplicationEventMulticaster);
 	}
-	
+
 }

@@ -87,6 +87,10 @@ final class PostProcessorRegistrationDelegate {
 					beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (beanFactory.isTypeMatch(ppName, PriorityOrdered.class)) {
+					// beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class) 获取的是
+					// ConfigurationClassPostProcessor对象，该对象的postProcessBeanDefinitionRegistry
+					// 方法会扫描对应配置类，将配置类中配置的扫描包路径中的Bean定义都记录在beanDefinitionMap对象中
+					// add by qianzb 2022-03-30 19:39
 					currentRegistryProcessors.add(beanFactory.getBean(ppName, BeanDefinitionRegistryPostProcessor.class));
 					processedBeans.add(ppName);
 				}
@@ -97,6 +101,9 @@ final class PostProcessorRegistrationDelegate {
 			currentRegistryProcessors.clear();
 
 			// Next, invoke the BeanDefinitionRegistryPostProcessors that implement Ordered.
+			// 由于ConfigurationClassPostProcessor的postProcessBeanDefinitionRegistry方法会将Bean定义记录在beanDefinitionMap对象中，
+			// 因此再调用getBeanNamesForType方法时，如果有自定义实现接口BeanDefinitionRegistryPostProcessor的类，则会返回多条数据
+			// add by qianzb 2022-03-30 19:39
 			postProcessorNames = beanFactory.getBeanNamesForType(BeanDefinitionRegistryPostProcessor.class, true, false);
 			for (String ppName : postProcessorNames) {
 				if (!processedBeans.contains(ppName) && beanFactory.isTypeMatch(ppName, Ordered.class)) {

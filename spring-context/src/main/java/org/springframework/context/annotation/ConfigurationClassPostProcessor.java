@@ -316,6 +316,7 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		Set<BeanDefinitionHolder> candidates = new LinkedHashSet<>(configCandidates);
 		Set<ConfigurationClass> alreadyParsed = new HashSet<>(configCandidates.size());
 		do {
+			// 常用启动方式时：扫描指定的包路径，并将对应的bean定义记录在beanDefinitionMap中 add by qianzb 2022-03-31 10:09
 			parser.parse(candidates);
 			parser.validate();
 

@@ -48,6 +48,10 @@ import org.springframework.util.Assert;
  */
 public class AnnotatedBeanDefinitionReader {
 
+	/**
+	 * bean定义注册器.
+	 * add by qianzb 2022-03-30 14:08
+	 */
 	private final BeanDefinitionRegistry registry;
 
 	private BeanNameGenerator beanNameGenerator = AnnotationBeanNameGenerator.INSTANCE;
@@ -255,6 +259,10 @@ public class AnnotatedBeanDefinitionReader {
 	 *
 	 * add by qianzb 20200408
 	 * 从给定的bean类中注册一个bean，从类声明的注释中派生其元数据
+	 *
+	 * add by qianzb 2022-03-3014:50
+	 * 注册bean定义。
+	 * beanClass：配置类对象
 	 */
 	private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
 			@Nullable Class<? extends Annotation>[] qualifiers, @Nullable Supplier<T> supplier,

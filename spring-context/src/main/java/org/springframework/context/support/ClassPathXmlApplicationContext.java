@@ -51,6 +51,7 @@ import org.springframework.util.Assert;
  */
 public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContext {
 
+	// 配置文件数组
 	@Nullable
 	private Resource[] configResources;
 
@@ -66,6 +67,9 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 
 	/**
 	 * Create a new ClassPathXmlApplicationContext for bean-style configuration.
+	 * <p>
+	 * 指定ApplicationContext的父容器.
+	 *
 	 * @param parent the parent context
 	 * @see #setConfigLocation
 	 * @see #setConfigLocations

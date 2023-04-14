@@ -537,6 +537,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				// Invoke factory processors registered as beans in the context.
 				// add by qianzb 20200408 调用上下文中注册为bean的工厂处理器。
 				// add by qianzb 20200413 执行BeanFactoryPostProcessor的方法，BeanFactory的后置处理器，在BeanFactory标准初始化之后执行的
+				// 执行BeanDefinitionRegistryPostProcessor子类、BeanFactoryPostProcessor子类的方法 add by qianzb 20220331 11:18
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
@@ -891,18 +892,22 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			beanFactory.addEmbeddedValueResolver(strVal -> getEnvironment().resolvePlaceholders(strVal));
 		}
 
+		// 20230222 先初始化 LoadTimeWeaverAware类型的Bean
 		// Initialize LoadTimeWeaverAware beans early to allow for registering their transformers early.
 		String[] weaverAwareNames = beanFactory.getBeanNamesForType(LoadTimeWeaverAware.class, false, false);
 		for (String weaverAwareName : weaverAwareNames) {
 			getBean(weaverAwareName);
 		}
 
+		// 20230222 停止使用用于类型匹配的临时类加载器
 		// Stop using the temporary ClassLoader for type matching.
 		beanFactory.setTempClassLoader(null);
 
+		// 20230222 停止所有的Bean定义，即已注册的Bean定义将不会修改或后处理
 		// Allow for caching all bean definition metadata, not expecting further changes.
 		beanFactory.freezeConfiguration();
 
+		// 初始化
 		// Instantiate all remaining (non-lazy-init) singletons.
 		beanFactory.preInstantiateSingletons();
 	}
@@ -914,18 +919,23 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void finishRefresh() {
 		// Clear context-level resource caches (such as ASM metadata from scanning).
+		// 20230223 清理一系列操作使用到的资源缓存
 		clearResourceCaches();
 
 		// Initialize lifecycle processor for this context.
+		// 20230223 初始化LifecycleProcessor
 		initLifecycleProcessor();
 
 		// Propagate refresh to lifecycle processor first.
+		// 20230223 启动所有实现了Lifecycle接口的Bean
 		getLifecycleProcessor().onRefresh();
 
 		// Publish the final event.
+		// 20230223 发布ContextRefreshedEvent事件
 		publishEvent(new ContextRefreshedEvent(this));
 
 		// Participate in LiveBeansView MBean, if active.
+		// 20230223 检查spring.liveBeansView.mbeanDomain是否存在，有，则会创建一个MBeanServer
 		LiveBeansView.registerApplicationContext(this);
 	}
 
